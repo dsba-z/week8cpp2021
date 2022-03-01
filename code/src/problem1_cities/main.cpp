@@ -29,8 +29,13 @@ struct City
 
 struct Country
 {
-    // you can use a vector of cities  
-    // vector<City> cities
+    std::string name;
+    std::vector<City> cities;
+    
+    bool operator==(const std::string& rhs)
+    {
+         return name == rhs;
+    }
 };
 
 
@@ -65,27 +70,36 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         
         // country
         std::getline(sstr, buffer, ',');
-        if (std::find(countries.begin(), countries.end(), buffer) == countries.end())
+        std::string countryName = buffer;
+        
+        
+        // population
+        std::getline(sstr, buffer, ',');
+        
+        
+        
+        if (std::find(countries.begin(), countries.end(), countryName) == countries.end())
         {
             // no such country
             Country country;
             
             // fill the country
             
+            // name
+            
+            // vector (add current city)
+            
             countries.push_back(country);
         }
         else
         {
             // there is such country
-            std::vector<Country>::iterator it = std::find(countries.begin(), countries.end(), buffer);
+            std::vector<Country>::iterator it = std::find(countries.begin(), countries.end(), countryName);
             
             // use iterator "it" to modify the country
             // add the new city to it
-            
+            it->cities.push_back(newCity);
         }
-        
-        // population
-        std::getline(sstr, buffer, ',');
     }
 }
 
