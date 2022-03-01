@@ -72,7 +72,7 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         
         
         bool cityFound = false;
-        for (const Country& country: countries)
+        for (Country& country: countries)
         {
             if (country.name == countryName)
             {
