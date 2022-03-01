@@ -24,13 +24,52 @@ struct City
 {
     std::string name;
     Coordinate coordinate;
+    
+    bool operator <(const City &b) const
+    {
+        return name < b.name;
+    }
 };
 
 struct Country
 {
     std::string name;
+    std::set<City> cities;
 };
 
+
+std::pair<City, std::string>  parseLine(const std::string& line)
+{
+    std::stringstream sstr(line);
+    
+    std::string buffer;
+    
+    City newCity;
+    
+    // city,lat,lng,country,population
+    
+    // city
+    std::getline(sstr, buffer, ',');
+    
+    newCity.name = buffer;
+
+    // lat
+    std::getline(sstr, buffer, ',');
+    newCity.coordinate.latitude = std::stod(buffer);
+    
+    // lng
+    std::getline(sstr, buffer, ',');
+    newCity.coordinate.longitude = std::stod(buffer);
+    
+    // country
+    std::getline(sstr, buffer, ',');
+    std::string countryName = buffer;
+    
+    // population
+    std::getline(sstr, buffer, ',');
+    
+    return std::make_pair(newCity, countryName);
+}
 
 
 void fillCountries(std::istream& inFile, std::vector<Country>& countries)
@@ -39,41 +78,16 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
     std::getline(inFile, line);
     while(std::getline(inFile, line))
     {
-        std::stringstream sstr(line);
+        std::pair<City, std::string> data = parseLine(line);
         
-        std::string buffer;
-        
-        City newCity;
-        double coordinateLatitude;
-        
-        // city,lat,lng,country,population
-        
-        // city
-        std::getline(sstr, buffer, ',');
-        
-        newCity.name = buffer;
-
-        // lat
-        std::getline(sstr, buffer, ',');
-        newCity.coordinate.latitude = std::stod(buffer);
-        
-        // lng
-        std::getline(sstr, buffer, ',');
-        newCity.coordinate.longitude = std::stod(buffer);
-        
-        // country
-        std::getline(sstr, buffer, ',');
-        std::string countryName = buffer;
-        
-        // population
-        std::getline(sstr, buffer, ',');
         
         bool cityFound = false;
         for (Country& country: countries)
         {
-            if (country.name == countryName)
+            if (country.name == data.second)
             {
                 // add the new element to the country.cities
+                country.cities.insert(data.first);
                 cityFound = true;
                 break;
             }
@@ -81,9 +95,16 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         
         if (!cityFound)
         {
-            // add a new country
-            // add a new element to its cities
-            // countries[countries.size() - 1].cities is the container of cities
+            
+            // 1) Make a new country object
+            // 2) Change its name and add the current city to it
+            // 3) Add the country object to the vector
+            Country newCountry;
+            newCountry.name = data.second;
+            newCountry.cities.insert(data.first);
+            countries.push_back(newCountry);
+           
+            
         }
         
         
@@ -95,6 +116,13 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
     }
 }
 
+std::ostream& operator <<(std::ostream& out, const City& city)
+{
+    out << 1;
+    
+    return out;
+}
+
 int main()
 {
     const std::string FILENAME = "../../data/problem1_cities/cities.csv";
@@ -104,6 +132,8 @@ int main()
     {
         std::cout<<"OK\n";
     }
+    City city;
+    std::cout << city;
     
     std::vector<Country> countries;
     
