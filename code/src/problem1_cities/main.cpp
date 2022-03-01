@@ -33,6 +33,7 @@ struct City
 struct Country
 {
     std::string name;
+    std::set<City> cities;
 };
 
 
@@ -84,12 +85,21 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
                 
         if (!cityFound)
         {
-            // make a new country
-            // add the city to the new country
+            // 1. make a new country
+            // 2. Change its name. Add the city to the new country
+            // 3. Add the new country to the vector
         }
         
         
     }
+}
+
+
+std::ostream& operator <<(std::ostream& out, const City& city)
+{
+    out << 1;
+    
+    return out;
 }
 
 int main()
@@ -101,7 +111,14 @@ int main()
     {
         std::cout<<"OK\n";
     }
+    City cityA;
+    City cityB;
     
+    if (cityA < cityB)
+    {
+        
+    }
+    std::cout << cityA;
     std::vector<Country> countries;
     fillCountries(inputFile, countries);
     
