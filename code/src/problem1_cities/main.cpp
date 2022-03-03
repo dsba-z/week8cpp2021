@@ -30,17 +30,44 @@ struct City
     {
          return name < rhs.name;
     }
+    
+    City(std::string name, double lat, double lon, int population)
+    {
+        this->name = "default name";
+        population = 0;
+        coordinate.latitude = 0;
+        coordinate.longitude = 0;
+    }
+//    City () {
+        
+//    }
+    
 };
 
 struct Country
 {
     std::string name;
+private:
+    
     std::set<City> cities;
+
+public:
     
     bool operator==(const std::string& rhs)
     {
          return name == rhs;
     }
+    
+    void addNewCity(const City& city)
+    {
+        
+    }
+    
+    int getNumberOfCities() const
+    {
+        return cities.size();
+    }
+    
 };
 
 
@@ -55,22 +82,20 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         std::stringstream sstr(line);
         
         // city,lat,lng,country,population
-        
-        City newCity;
-        
+//        City newCity;
         
         // city name
         std::getline(sstr, buffer, ',');
-        newCity.name = buffer;
+        std::string name = buffer;
         
         // lat
         std::getline(sstr, buffer, ',');
-        newCity.coordinate.latitude = std::stod(buffer);
+        double latitude = std::stod(buffer);
         
         
         // lng
         std::getline(sstr, buffer, ',');
-        newCity.coordinate.longitude = std::stod(buffer);
+        double longitude = std::stod(buffer);
         
         
         // country
@@ -80,7 +105,16 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         
         // population
         std::getline(sstr, buffer, ',');
-        newCity.population = std::stoi(buffer);
+        int population = std::stoi(buffer);
+        
+        
+        
+        
+        City newCity(name, latitude, longitude, population);
+        
+        std::pair<City, std::string> b({newCity, "123"});
+        
+        std::pair<City, std::string> a = std::make_pair(newCity, "213");
         
         bool cityFound = false;
         for (Country& country: countries)
@@ -139,6 +173,17 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
 //        }
     }
 }
+// 1. fill the vector of Countries (you can use the code from GitHub)
+// 2. Overload operator << for Cities (the function below this comment)
+// 3. Change operator < for Cities to compare them by population (larger first)
+// 4. Move data reading code from fillCountries to a separate function
+
+std::ostream& operator <<(std::ostream& out, const City& city)
+{
+    out << 1;
+    out << city.name;
+    return out;
+}
 
 int main()
 {
@@ -159,6 +204,7 @@ int main()
     for (const Country& country: countries)
     {
         std::cout << country.name << std::endl;
+        std::cout << country.getNumberOfCities();
     }
     
     return 0;
