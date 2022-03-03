@@ -32,8 +32,21 @@ struct City
 
 struct Country
 {
-    std::string name;
+    
+private:
     std::set<City> cities;
+    
+public:
+    std::string name;
+    void addCity(const City& city)
+    {
+        cities.insert(city);
+    }
+    
+    const std::set<City>& getCities() const
+    {
+        return cities;
+    }
 };
 
 
@@ -78,13 +91,20 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
             if (country.name == countryName)
             {
                 cityFound = true;
-                // add city to country
+//                country.cities.insert(newCity);
+//                country.cities.clear();
+                country.addCity(newCity);
                 break;
             }
         }
                 
         if (!cityFound)
         {
+            
+            Country country;
+            country.name = countryName;
+            country.addCity(newCity);
+            countries.push_back(country);
             // 1. make a new country
             // 2. Change its name. Add the city to the new country
             // 3. Add the new country to the vector
@@ -125,6 +145,10 @@ int main()
     for (const Country& country: countries)
     {
         std::cout << country.name << std::endl;
+        for (const City& city: country.getCities())
+        {
+            std::cout << city << std::endl;
+        }
     }
     
     return 0;
