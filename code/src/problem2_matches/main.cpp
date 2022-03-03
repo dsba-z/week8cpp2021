@@ -6,19 +6,29 @@
 
 class FootballTeam{
     std::string name;
+    std::string stadium;
     ///
     /// //
     /// 
     /// 
+    int losses;
     /// 
-    
-    int getWins();
-    int getLosses();
+public:
+    int getWins() const;
+    int getLosses() const;
+    FootballTeam(const std::string& name, const std::string& stadium);
 };
 
-int FootballTeam::getLosses()
+FootballTeam::FootballTeam(const std::string& nameInput, const std::string& stadiumInput)
+    :name(nameInput),stadium(stadiumInput), losses(0)
 {
-    return 1;
+    
+}
+
+int FootballTeam::getLosses() const
+{
+    return losses;
+//    return this->losses;
 }
 
 void parseLineTeam(const std::string& line, std::string& name, std::string& city, std::string& stadium, double& level)
@@ -54,6 +64,7 @@ void loadTeams(std::istream& in, std::vector<FootballTeam>& teams)
         std::cout << "city = " << city << "\n";
         std::cout << "stadium = " << stadium << "\n";
         std::cout << "level = " << level << "\n\n";
+//        name, city, stadium, level
     }
 }
 

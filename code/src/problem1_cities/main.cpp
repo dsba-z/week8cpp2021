@@ -35,9 +35,9 @@ class Country
 {
     std::set<City> cities;
     
+    std::string name;
     
 public:
-    std::string name;
 
     
     void addCity(const City& city)
