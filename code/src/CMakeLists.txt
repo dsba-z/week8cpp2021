@@ -14,4 +14,4 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 
 #### the list of targets ####
 add_executable(problem1_cities   problem1_cities/main.cpp)
-add_executable(problem2_matches  problem2_matches/main.cpp)
+add_executable(problem2_matches  problem2_matches/main.cpp example.h example.cpp)

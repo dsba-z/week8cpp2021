@@ -31,11 +31,40 @@ struct City
     }
 };
 
-struct Country
+class Country
 {
-    std::string name;
     std::set<City> cities;
+    
+    
+public:
+    std::string name;
+
+    
+    void addCity(const City& city)
+    {
+        cities.insert(city);
+    }
+    
+    const std::set<City>& getCities() const;
+
+    
+    Country(const std::string& nameInput) :
+        name(nameInput)
+    {
+        std::cout << "Hello";
+//        name = nameInput;
+    }
+    
+    Country() {}
+    
 };
+
+const std::set<City>& Country::getCities() const
+{
+
+    return cities;
+
+}
 
 
 std::pair<City, std::string>  parseLine(const std::string& line)
@@ -87,7 +116,7 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
             if (country.name == data.second)
             {
                 // add the new element to the country.cities
-                country.cities.insert(data.first);
+                country.addCity(data.first);
                 cityFound = true;
                 break;
             }
@@ -99,9 +128,10 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
             // 1) Make a new country object
             // 2) Change its name and add the current city to it
             // 3) Add the country object to the vector
-            Country newCountry;
-            newCountry.name = data.second;
-            newCountry.cities.insert(data.first);
+//            Country newCountry;
+            Country newCountry(data.second);
+//            newCountry.name = data.second;
+            newCountry.addCity(data.first);
             countries.push_back(newCountry);
            
             
@@ -118,7 +148,7 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
 
 std::ostream& operator <<(std::ostream& out, const City& city)
 {
-    out << 1;
+    out << "city: " << city.name;
     
     return out;
 }
@@ -142,6 +172,12 @@ int main()
     for (const Country& country: countries)
     {
         std::cout << country.name << std::endl;
+        
+        for (const City& city: country.getCities())
+        {
+            std::cout << city << std::endl;
+        }
+        
     }
     
     return 0;

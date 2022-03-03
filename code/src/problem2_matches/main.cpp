@@ -2,12 +2,24 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
+#include "../example.h"
 
 class FootballTeam{
+    std::string name;
+    ///
+    /// //
+    /// 
+    /// 
+    /// 
     
+    int getWins();
+    int getLosses();
 };
 
+int FootballTeam::getLosses()
+{
+    return 1;
+}
 
 void parseLineTeam(const std::string& line, std::string& name, std::string& city, std::string& stadium, double& level)
 {
