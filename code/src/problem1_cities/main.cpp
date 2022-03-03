@@ -23,11 +23,30 @@ struct City
 {
     std::string name;
     Coordinate coordinate;
+    int population;
     
     bool operator <(const City& rhs) const
     {
         return name < rhs.name;
     }
+    
+//    City(const std::string& inputName, double lat, double lon) 
+//    {
+//        name = inputName;
+//        coordinate.latitude = lat;
+//        coordinate.longitude = lon;
+//        this->population = 0;
+//        std::cout << "constructor";
+//    }
+    
+    City(const std::string& inputName, double lat, double lon)
+        : name(inputName), population(0)
+    {
+
+    }
+    
+    City () {}
+    
 };
 
 struct Country
@@ -64,18 +83,22 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         
         // city,lat,lng,country,population
         
-        City newCity;
         
         // city name
         std::getline(sstr, buffer, ',');
-        newCity.name = buffer;
+        std::string name = buffer;
+
+        
+        
         
         // latitude
         std::getline(sstr, buffer, ',');
-        newCity.coordinate.latitude = std::stod(buffer);
+        double latitude = std::stod(buffer);
 
         // longitude
         std::getline(sstr, buffer, ',');
+        
+        double longitude = std::stod(buffer);
 
         // country name
         std::getline(sstr, buffer, ',');
@@ -83,7 +106,13 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         
         // population
         std::getline(sstr, buffer, ',');
+        int population = std::stoi(buffer);
         
+        
+        City newCity(name, latitude, longitude);
+        
+        
+        City city2;
         
         bool cityFound = false;
         for (Country& country: countries)
