@@ -5,7 +5,54 @@
 
 
 class FootballTeam{
+    std::string name;
+    std::string stadium;
+    ///
+    /// 
+    /// 
+    /// 
+    /// 
+    //
+    int points;
+    int losses;
+public:
     
+    FootballTeam (std::string inputName, ...)
+        :name(inputName), losses(0)
+    {
+        
+    }
+
+    std::string getName() const
+    {
+        return name;
+    }
+    
+    
+    void setPoints(int points2)
+    {
+        points = points2;
+    }
+    
+    std::string getStadium() const;
+};
+
+std::string FootballTeam::getStadium() const
+{
+    return stadium;
+}
+
+
+
+class Tournament{
+    std::vector<FootballTeam> teams;
+    
+public:
+    Tournament(std::vector<FootballTeam> teams)
+        :teams(teams)
+    {
+        
+    }
 };
 
 
