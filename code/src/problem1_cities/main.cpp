@@ -26,7 +26,7 @@ struct City
     int population;
     Coordinate coordinate;
     
-    bool operator<(const City& rhs)
+    bool operator<(const City& rhs) const
     {
          return name < rhs.name;
     }
@@ -35,7 +35,7 @@ struct City
 struct Country
 {
     std::string name;
-    std::vector<City> cities;
+    std::set<City> cities;
     
     bool operator==(const std::string& rhs)
     {
@@ -82,10 +82,20 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
         std::getline(sstr, buffer, ',');
         newCity.population = std::stoi(buffer);
         
-        
-        if (std::find(countries.begin(), countries.end(), countryName) == countries.end())
+        bool cityFound = false;
+        for (Country& country: countries)
         {
-            // no such country
+            if (country.name == countryName)
+            {
+                cityFound = true;
+                country.cities.insert(newCity);
+                // add city to country
+                break;
+            }
+        }
+                
+        if (!cityFound)
+        {
             Country country;
             
             // fill the country
@@ -94,19 +104,39 @@ void fillCountries(std::istream& inFile, std::vector<Country>& countries)
             country.name = countryName;
             
             // vector (add current city)
-            country.cities.push_back(newCity);
+            country.cities.insert(newCity);
             
             countries.push_back(country);
+            // 1. make a new country
+            // 2. Change its name. Add the city to the new country
+            // 3. Add the new country to the vector
         }
-        else
-        {
-            // there is such country
-            std::vector<Country>::iterator it = std::find(countries.begin(), countries.end(), countryName);
+        
+        
+//        if (std::find(countries.begin(), countries.end(), countryName) == countries.end())
+//        {
+//            // no such country
+//            Country country;
             
-            // use iterator "it" to modify the country
-            // add the new city to it
-            it->cities.push_back(newCity);
-        }
+//            // fill the country
+            
+//            // name
+//            country.name = countryName;
+            
+//            // vector (add current city)
+//            country.cities.push_back(newCity);
+            
+//            countries.push_back(country);
+//        }
+//        else
+//        {
+//            // there is such country
+//            std::vector<Country>::iterator it = std::find(countries.begin(), countries.end(), countryName);
+            
+//            // use iterator "it" to modify the country
+//            // add the new city to it
+//            it->cities.push_back(newCity);
+//        }
     }
 }
 
